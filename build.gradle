@@ -1,7 +1,7 @@
-plugins {
-    id 'java'
-}
+apply plugin: 'java'
+apply plugin: 'application'
 
+mainClassName = 'kr.owens.treesize.Application'
 group 'kr.owens'
 version '0.1'
 
@@ -13,4 +13,18 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'kr.owens.treesize.Application'
+        )
+    }
+
+    archiveName 'TreeSize-' + version + '.jar'
+    dependsOn configurations.runtime
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
